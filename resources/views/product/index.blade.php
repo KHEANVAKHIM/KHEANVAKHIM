@@ -1,28 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ asset('css/product-index.css') }}">
+@extends('layouts.app')
 
-    <title>Document</title>
-</head>
-<body>
-    <h1>Danh sách sản phẩm</h1>
+@section('title', 'Danh sách sản phẩm')
 
-<a href="{{ route('product.add') }}">
-    <button>Thêm sản phẩm mới</button>
-</a>
+@section('content')
+@if(session('success'))
+    <div class="alert alert-success">{{ session('success') }}</div>
+@endif
 
-<ul>
-    @foreach($products as $p)
-        <li>
-            <a href="{{ route('product.detail', $p['id']) }}">
-                {{ $p['name'] }} - {{ $p['price'] }}$
-            </a>
-        </li>
-    @endforeach
-</ul>
+<h3>{{ $title }}</h3>
 
-</body>
-</html>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach($products as $p)
+        <tr>
+            <td>{{ $p['id'] }}</td>
+            <td>{{ $p['name'] }}</td>
+            <td>{{ $p['price'] }}</td>
+        </tr>
+        @endforeach
+    </tbody>
+</table>
+@endsection

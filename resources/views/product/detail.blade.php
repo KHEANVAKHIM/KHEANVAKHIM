@@ -7,7 +7,7 @@
 </head>
 <body>
     <h1>Chi tiết sản phẩm</h1>
-    <p>Id sản phẩm: {{ $id }}</p>
+    <p>Id : {{ $id }}</p>
     <a href="{{ route('product.index') }}">Quay lại danh sách</a>
 
 </body>
