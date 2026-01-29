@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Middleware\CheckTimeAccess;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
 
-class ProductsController extends Controller
+class ProductsController extends Controller 
 {
     
     /*public function index()
@@ -15,6 +17,11 @@ class ProductsController extends Controller
         ];
         return view('product.index', compact('products'));
     } */
+   
+   /*public static function middleware(){
+    return [CheckTimeAccess::class];
+   }
+   */
    public function index(Request $request)
 {
     if (!session()->has('user')) {

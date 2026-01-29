@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\CheckTimeAccess;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -10,9 +11,16 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
     )
-    ->withMiddleware(function (Middleware $middleware): void {
-        //
+    /*->withMiddleware(function (Middleware $middleware): void {
+        $middleware ->append(CheckTimeAccess::class);
+        //$middleware->append(App\Http\Middleware\CheckTimeAccess::class);
+    })*/
+    ->withMiddleware(function (Middleware $middleware) {
+         $middleware->alias([
+        'check.age' => \App\Http\Middleware\CheckAge::class,
+        ]);
     })
+
     ->withExceptions(function (Exceptions $exceptions): void {
         //
     })->create();

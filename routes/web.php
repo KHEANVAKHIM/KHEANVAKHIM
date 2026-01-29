@@ -1,20 +1,41 @@
 <?php
 
+use App\Http\Controllers\TestController;
+use App\Http\Middleware\CheckTimeAccess;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ProductsController;
+use Psy\ManualUpdater\Checker;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use App\Http\Controllers\AuthController;
 
-Route::get('/', function () {
-    return view('hello');
-})->name('hello');
 
-Route::get('/test', function () {
-    return response()->json("Hello, World!");
+
+
+Route::get('/home', function () {
+    return "Chào mừng bạn!";
+})->middleware('check.age');
+
+
+Route::get('/signin', [AuthController::class, 'SignIn']);
+Route::post('/signin', [AuthController::class, 'CheckSignIn']);
+Route::get('/age', function () {
+    return view('age');
 });
+
+Route::post('/age', function (Illuminate\Http\Request $request) {
+    session(['age' => $request->age]);
+    return redirect('/home');
+});
+
+
 
 //Product routes
 
 Route::prefix('product')->group(function () {
+    /*Route::get('/', [ProductsController::class, 'index'])
+     ->middleware(CheckTimeAccess::class);
+    */
     Route::get('/login', [ProductsController::class, 'showLoginForm'])->name('product.login');
     Route::post('/login', [ProductsController::class, 'login'])->name('product.login.submit');
 
@@ -23,7 +44,7 @@ Route::prefix('product')->group(function () {
     
     Route::get('/logout', [ProductsController::class, 'logout'])->name('product.logout');
 
-
+    
     Route::get('/list', [ProductsController::class, 'index'])->name('product.index');
     Route::get('/add', [ProductsController::class, 'create'])->name('product.add');
     Route::post('/add', [ProductsController::class, 'store'])->name('product.store');
@@ -54,6 +75,7 @@ Route::prefix('product')->group(function () {
     Route::get('/banco/{n}', function ($n) {
         return view('banco', compact('n'));
     })->name('banco');
+    Route::resource('Test', TestController::class);
 
     Route::fallback(function () {
         return response()->view('error.404', [], 404);
